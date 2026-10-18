@@ -1,0 +1,17 @@
+{
+  "name": "livro-bot",
+  "version": "1.0.0",
+  "description": "Bot de Discord para avaliar livros com notas de 0,5 a 5 estrelas em uma única mensagem",
+  "main": "index.js",
+  "scripts": {
+    "deploy": "node deploy-commands.js",
+    "start": "node index.js"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "dependencies": {
+    "discord.js": "^14.16.0",
+    "dotenv": "^16.4.0"
+  }
+}
