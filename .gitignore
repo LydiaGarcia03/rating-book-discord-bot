@@ -1,0 +1,14 @@
+# Secrets — never commit the bot token
+.env
+
+# Dependencies (recreated with npm install)
+node_modules/
+
+# Runtime data (ratings and server settings)
+data/
+
+# OS / editor files
+.DS_Store
+Thumbs.db
+.vscode/
+*.log

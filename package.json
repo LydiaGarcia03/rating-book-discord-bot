@@ -1,12 +1,13 @@
 {
-  "name": "livro-bot",
+  "name": "book-rating-bot",
   "version": "1.0.0",
-  "description": "Bot de Discord para avaliar livros com notas de 0,5 a 5 estrelas em uma única mensagem",
+  "description": "Self-hosted Discord bot for rating books with ½ to 5 stars, all in a single message, with role and user permissions to manage polls.",
   "main": "index.js",
   "scripts": {
     "deploy": "node deploy-commands.js",
     "start": "node index.js"
   },
+  "keywords": ["discord", "discord-bot", "discord-js", "book-rating", "books"],
   "engines": {
     "node": ">=18"
   },

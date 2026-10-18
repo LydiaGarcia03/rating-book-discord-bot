@@ -7,7 +7,7 @@
 require('dotenv').config();
 const { REST, Routes, SlashCommandBuilder, PermissionFlagsBits } = require('discord.js');
 
-const pt = texto => ({ 'pt-BR': texto });
+const pt = text => ({ 'pt-BR': text });
 
 const book = new SlashCommandBuilder()
   .setName('book').setNameLocalizations(pt('livro'))

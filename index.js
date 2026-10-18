@@ -7,409 +7,430 @@ const {
   MessageFlags, PermissionFlagsBits,
 } = require('discord.js');
 
-// ---------- Textos (pt = português, en = inglês) ----------
-const TXT = {
-  pt: {
-    locale: 'pt-BR',
-    por: autor => `por **${autor}**`,
-    avaliacoes: n => (n === 1 ? '1 avaliação' : `${n} avaliações`),
-    ninguem: 'Ninguém avaliou ainda.',
-    notas: 'Notas',
-    outras: n => `+${n} outras`,
-    rodapeAberta: 'Escolha sua nota no menu abaixo — você pode mudar quando quiser',
-    rodapeFechada: '🔒 Avaliação encerrada',
-    placeholder: 'Dar minha nota',
-    opcao: (n, f) => (n === 0.5 ? '½ estrela' : `${f} ${n === 1 ? 'estrela' : 'estrelas'}`),
-    remover: 'Remover minha nota',
-    encerrar: 'Encerrar',
-    reabrir: 'Reabrir',
-    // avisos privados
-    capaNaoImagem: 'A capa precisa ser uma imagem (PNG, JPG, WEBP ou GIF).',
-    capaUrlInvalida: 'O link da capa precisa começar com http:// ou https://',
-    naoEncontrada: 'Não encontrei essa avaliação (ela pode ter sido criada por outra versão do bot).',
-    jaEncerrada: 'Essa avaliação já foi encerrada.',
-    semPermissao: 'Você não tem permissão para encerrar ou reabrir esta avaliação.',
-    erro: 'Algo deu errado. Tente de novo.',
-    painelAntigo: 'Agora a nota é dada direto no menu da mensagem da avaliação. 🙂',
-    permTitulo: '**Quem pode encerrar e reabrir avaliações:**',
-    permCriador: 'Quem criou a avaliação',
-    permAdmins: 'Administradores do servidor',
-    permCargos: lista => `Cargos: ${lista}`,
-    permNenhum: '_nenhum cargo extra_',
-    permPessoas: lista => `Pessoas: ${lista}`,
-    permNinguem: '_nenhuma pessoa extra_',
-  },
+// ---------- Text (en = English, pt = Portuguese) ----------
+const TEXT = {
   en: {
     locale: 'en-US',
-    por: autor => `by **${autor}**`,
-    avaliacoes: n => (n === 1 ? '1 rating' : `${n} ratings`),
-    ninguem: 'No ratings yet.',
-    notas: 'Ratings',
-    outras: n => `+${n} more`,
-    rodapeAberta: 'Pick your rating from the menu below — you can change it anytime',
-    rodapeFechada: '🔒 Rating closed',
+    by: author => `by **${author}**`,
+    ratingCount: n => (n === 1 ? '1 rating' : `${n} ratings`),
+    noRatings: 'No ratings yet.',
+    ratingsHeader: 'Ratings',
+    more: n => `+${n} more`,
+    footerOpen: 'Pick your rating from the menu below — you can change it anytime',
+    footerClosed: '🔒 Rating closed',
     placeholder: 'Rate this book',
-    opcao: (n, f) => (n === 0.5 ? '½ star' : `${f} ${n === 1 ? 'star' : 'stars'}`),
-    remover: 'Remove my rating',
-    encerrar: 'Close',
-    reabrir: 'Reopen',
-    capaNaoImagem: 'The cover must be an image (PNG, JPG, WEBP or GIF).',
-    capaUrlInvalida: 'The cover link must start with http:// or https://',
-    naoEncontrada: "I couldn't find this rating (it may have been created by another version of the bot).",
-    jaEncerrada: 'This rating has already been closed.',
-    semPermissao: "You don't have permission to close or reopen this rating.",
-    erro: 'Something went wrong. Please try again.',
-    painelAntigo: 'Ratings are now given straight from the menu on the rating message. 🙂',
-    permTitulo: '**Who can close and reopen ratings:**',
-    permCriador: 'Whoever created the rating',
+    option: (n, f) => (n === 0.5 ? '½ star' : `${f} ${n === 1 ? 'star' : 'stars'}`),
+    remove: 'Remove my rating',
+    close: 'Close',
+    reopen: 'Reopen',
+    // private notices
+    coverNotImage: 'The cover must be an image (PNG, JPG, WEBP or GIF).',
+    coverUrlInvalid: 'The cover link must start with http:// or https://',
+    pollNotFound: "I couldn't find this rating poll (it may have been created by another copy of the bot).",
+    pollClosed: 'This rating has already been closed.',
+    noPermission: "You don't have permission to close or reopen this rating.",
+    error: 'Something went wrong. Please try again.',
+    permTitle: '**Who can close and reopen ratings:**',
+    permCreator: 'Whoever created the rating',
     permAdmins: 'Server administrators',
-    permCargos: lista => `Roles: ${lista}`,
-    permNenhum: '_no extra roles_',
-    permPessoas: lista => `People: ${lista}`,
-    permNinguem: '_no extra people_',
+    permRoles: list => `Roles: ${list}`,
+    permUsers: list => `People: ${list}`,
+    permNoRoles: '_no extra roles_',
+    permNoUsers: '_no extra people_',
+  },
+  pt: {
+    locale: 'pt-BR',
+    by: author => `por **${author}**`,
+    ratingCount: n => (n === 1 ? '1 avaliação' : `${n} avaliações`),
+    noRatings: 'Ninguém avaliou ainda.',
+    ratingsHeader: 'Notas',
+    more: n => `+${n} outras`,
+    footerOpen: 'Escolha sua nota no menu abaixo — você pode mudar quando quiser',
+    footerClosed: '🔒 Avaliação encerrada',
+    placeholder: 'Dar minha nota',
+    option: (n, f) => (n === 0.5 ? '½ estrela' : `${f} ${n === 1 ? 'estrela' : 'estrelas'}`),
+    remove: 'Remover minha nota',
+    close: 'Encerrar',
+    reopen: 'Reabrir',
+    coverNotImage: 'A capa precisa ser uma imagem (PNG, JPG, WEBP ou GIF).',
+    coverUrlInvalid: 'O link da capa precisa começar com http:// ou https://',
+    pollNotFound: 'Não encontrei essa avaliação (ela pode ter sido criada por outra cópia do bot).',
+    pollClosed: 'Essa avaliação já foi encerrada.',
+    noPermission: 'Você não tem permissão para encerrar ou reabrir esta avaliação.',
+    error: 'Algo deu errado. Tente de novo.',
+    permTitle: '**Quem pode encerrar e reabrir avaliações:**',
+    permCreator: 'Quem criou a avaliação',
+    permAdmins: 'Administradores do servidor',
+    permRoles: list => `Cargos: ${list}`,
+    permUsers: list => `Pessoas: ${list}`,
+    permNoRoles: '_nenhum cargo extra_',
+    permNoUsers: '_nenhuma pessoa extra_',
   },
 };
 
-// Idioma de quem clicou (para mensagens privadas): segue o idioma do Discord da pessoa
-const idiomaUsuario = interaction => (interaction.locale?.startsWith('pt') ? 'pt' : 'en');
-// As mensagens de avaliação no canal são sempre em inglês (avaliações antigas continuam em português)
-const IDIOMA_PADRAO = 'en';
+// Rating messages in the channel are always posted in this language
+const DEFAULT_LANGUAGE = 'en';
+// Private notices follow the language of the person who clicked
+const userLanguage = interaction => (interaction.locale?.startsWith('pt') ? 'pt' : 'en');
 
-// ---------- Armazenamento (arquivos JSON simples) ----------
+// ---------- Storage (plain JSON files) ----------
 const DATA_DIR = path.join(__dirname, 'data');
 const POLLS_FILE = path.join(DATA_DIR, 'polls.json');
 const CONFIG_FILE = path.join(DATA_DIR, 'config.json');
-let polls = {};
-let config = {}; // { [guildId]: { cargos: [roleId], pessoas: [userId] } }
+let polls = {};  // { [messageId]: Poll }
+let config = {}; // { [guildId]: { roles: [roleId], users: [userId] } }
 
-function ler(arquivo) {
-  try { return JSON.parse(fs.readFileSync(arquivo, 'utf8')); } catch { return {}; }
+function readJson(file) {
+  try { return JSON.parse(fs.readFileSync(file, 'utf8')); } catch { return {}; }
 }
-function gravar(arquivo, dados) {
+function writeJson(file, data) {
   fs.mkdirSync(DATA_DIR, { recursive: true });
-  const tmp = arquivo + '.tmp';
-  fs.writeFileSync(tmp, JSON.stringify(dados));
-  fs.renameSync(tmp, arquivo);
+  const tmp = file + '.tmp';
+  fs.writeFileSync(tmp, JSON.stringify(data));
+  fs.renameSync(tmp, file);
 }
-// As notas são gravadas em disco logo depois de responder ao Discord, juntando vários cliques
-// numa gravação só — assim o disco nunca atrasa a resposta.
-let gravacaoPendente = null;
-function salvar() {
-  if (gravacaoPendente) return;
-  gravacaoPendente = setTimeout(() => {
-    gravacaoPendente = null;
-    try { gravar(POLLS_FILE, polls); } catch (err) { console.error('Erro ao salvar notas:', err.message); }
+
+// Converts data saved by older (Portuguese) versions of the bot to the current format
+function migratePoll(p) {
+  if ('title' in p) return p;
+  return {
+    title: p.titulo,
+    author: p.autor,
+    language: p.idioma || 'pt',
+    creatorId: p.criador,
+    closed: !!p.fechada,
+    ratings: p.notas || {},
+    coverFile: p.capaArquivo || null,
+    coverUrl: p.capaUrl || null,
+  };
+}
+function migrateGuildConfig(c) {
+  return { roles: c.roles || c.cargos || [], users: c.users || c.pessoas || [] };
+}
+function loadData() {
+  polls = Object.fromEntries(Object.entries(readJson(POLLS_FILE)).map(([id, p]) => [id, migratePoll(p)]));
+  config = Object.fromEntries(Object.entries(readJson(CONFIG_FILE)).map(([id, c]) => [id, migrateGuildConfig(c)]));
+}
+
+// Ratings are written to disk right after replying to Discord, batching several clicks
+// into one write — so the disk never slows down a response.
+let pendingWrite = null;
+function savePolls() {
+  if (pendingWrite) return;
+  pendingWrite = setTimeout(() => {
+    pendingWrite = null;
+    try { writeJson(POLLS_FILE, polls); } catch (err) { console.error('Failed to save ratings:', err.message); }
   }, 300);
 }
-function salvarAgora() {
-  if (gravacaoPendente) { clearTimeout(gravacaoPendente); gravacaoPendente = null; }
-  gravar(POLLS_FILE, polls);
+function savePollsNow() {
+  if (pendingWrite) { clearTimeout(pendingWrite); pendingWrite = null; }
+  writeJson(POLLS_FILE, polls);
 }
-const salvarConfig = () => gravar(CONFIG_FILE, config);
+const saveConfig = () => writeJson(CONFIG_FILE, config);
 
-// Garante que nada se perde ao fechar o bot (Ctrl+C, fechar janela, pm2 stop)
-for (const sinal of ['SIGINT', 'SIGTERM', 'SIGHUP']) {
-  process.on(sinal, () => { try { salvarAgora(); } finally { process.exit(0); } });
-}
-
-// Mostra no terminal quanto tempo cada clique levou (DEBUG_TEMPO=0 no .env desliga)
-const MEDIR = process.env.DEBUG_TEMPO !== '0';
-function medir(interaction, inicio) {
-  if (!MEDIR) return;
-  const chegada = inicio - interaction.createdTimestamp;
-  const resposta = Date.now() - inicio;
-  console.log(`[tempo] clique→bot: ${chegada}ms | bot→Discord: ${resposta}ms | ping: ${interaction.client.ws.ping}ms`);
+// Make sure nothing is lost when the bot stops (Ctrl+C, closing the window, pm2 stop)
+for (const signal of ['SIGINT', 'SIGTERM', 'SIGHUP']) {
+  process.on(signal, () => { try { savePollsNow(); } finally { process.exit(0); } });
 }
 
-// Cliques que ainda estão sendo processados, por pessoa e avaliação
-const emAndamento = new Set();
+// Logs how long each rating took (set DEBUG_TIMING=0 in .env to turn it off)
+const LOG_TIMING = (process.env.DEBUG_TIMING ?? process.env.DEBUG_TEMPO) !== '0';
+function logTiming(interaction, start) {
+  if (!LOG_TIMING) return;
+  const arrival = start - interaction.createdTimestamp;
+  const response = Date.now() - start;
+  console.log(`[timing] click→bot: ${arrival}ms | bot→Discord: ${response}ms | ping: ${interaction.client.ws.ping}ms`);
+}
 
-// ---------- Emojis de estrela ----------
-// O bot sobe sozinho as imagens da pasta assets/ como emojis próprios dele (só na 1ª vez).
-const EMOJI_NOMES = {
-  cheia: 'livro_estrela_cheia',
-  meia: 'livro_estrela_meia',
-  vazia: 'livro_estrela_vazia',
+// Clicks still being processed, per person and poll
+const inFlight = new Set();
+
+// ---------- Star emojis ----------
+// The bot uploads the images in assets/ as its own application emojis (only the first time).
+const EMOJI_NAMES = {
+  full: 'star_full',
+  half: 'star_half',
+  empty: 'star_empty',
 };
-// Um emoji por nota para o dropdown (5 estrelas em 2 fileiras): nota05 = ½, nota35 = 3,5 ...
-const chaveNota = n => `nota${String(n * 10).padStart(2, '0')}`;
+// One emoji per rating for the dropdown (5 stars in 2 rows): rating05 = ½, rating35 = 3.5 ...
+const ratingKey = n => `rating${String(n * 10).padStart(2, '0')}`;
 for (let k = 1; k <= 10; k++) {
   const n = k / 2;
-  EMOJI_NOMES[chaveNota(n)] = `livro_nota_${String(n * 10).padStart(2, '0')}`;
+  EMOJI_NAMES[ratingKey(n)] = `rating_${String(n * 10).padStart(2, '0')}`;
 }
 const EMOJI = {};
-const TEXTO = { cheia: '★', meia: '½', vazia: '☆' }; // reserva, se os emojis falharem
+const FALLBACK = { full: '★', half: '½', empty: '☆' }; // used if the emojis can't be created
 
-async function prepararEmojis(client) {
+async function setupEmojis(client) {
   try {
-    const existentes = await client.application.emojis.fetch();
-    for (const [chave, nome] of Object.entries(EMOJI_NOMES)) {
-      let emoji = existentes.find(e => e.name === nome);
+    const existing = await client.application.emojis.fetch();
+    for (const [key, name] of Object.entries(EMOJI_NAMES)) {
+      let emoji = existing.find(e => e.name === name);
       if (!emoji) {
         emoji = await client.application.emojis.create({
-          attachment: path.join(__dirname, 'assets', `${nome}.png`),
-          name: nome,
+          attachment: path.join(__dirname, 'assets', `${name}.png`),
+          name,
         });
-        console.log(`Emoji ${nome} criado.`);
+        console.log(`Emoji ${name} created.`);
       }
-      EMOJI[chave] = emoji;
+      EMOJI[key] = emoji;
     }
   } catch (err) {
-    console.warn('Não consegui preparar os emojis de estrela; usando ★ simples.', err.message);
+    console.warn("Couldn't set up the star emojis; falling back to plain ★.", err.message);
   }
 }
 
-// ---------- Visual ----------
-function partes(n) {
-  const r = Math.round(n * 2) / 2;               // arredonda para o ½ mais próximo
-  const cheias = Math.floor(r);
-  const meia = r - cheias === 0.5;
+// ---------- Rendering ----------
+function starParts(n) {
+  const r = Math.round(n * 2) / 2;               // round to the nearest ½
+  const full = Math.floor(r);
+  const half = r - full === 0.5;
   return [
-    ...Array(cheias).fill('cheia'),
-    ...(meia ? ['meia'] : []),
-    ...Array(5 - cheias - (meia ? 1 : 0)).fill('vazia'),
+    ...Array(full).fill('full'),
+    ...(half ? ['half'] : []),
+    ...Array(5 - full - (half ? 1 : 0)).fill('empty'),
   ];
 }
-const estrelas = n => partes(n).map(k => (EMOJI[k] ? EMOJI[k].toString() : TEXTO[k])).join('');
+const stars = n => starParts(n).map(k => (EMOJI[k] ? EMOJI[k].toString() : FALLBACK[k])).join('');
 const fmt = (n, t) => n.toLocaleString(t.locale, { minimumFractionDigits: 1, maximumFractionDigits: 1 });
-const fmtCurto = (n, t) => n.toLocaleString(t.locale, { maximumFractionDigits: 1 }); // 4 / 4,5
-const NOTAS = [5, 4.5, 4, 3.5, 3, 2.5, 2, 1.5, 1, 0.5];
+const fmtShort = (n, t) => n.toLocaleString(t.locale, { maximumFractionDigits: 1 }); // 4 / 4.5
+const RATINGS = [5, 4.5, 4, 3.5, 3, 2.5, 2, 1.5, 1, 0.5];
 
-function mediaDe(poll) {
-  const v = Object.values(poll.notas);
-  return v.length ? v.reduce((a, b) => a + b, 0) / v.length : 0;
+function averageOf(poll) {
+  const values = Object.values(poll.ratings);
+  return values.length ? values.reduce((a, b) => a + b, 0) / values.length : 0;
 }
 
-function montarEmbed(poll, t) {
-  const total = Object.keys(poll.notas).length;
-  const media = mediaDe(poll);
+function buildEmbed(poll, t) {
+  const total = Object.keys(poll.ratings).length;
+  const average = averageOf(poll);
 
-  let desc = `${t.por(poll.autor)}\n`;
+  let desc = `${t.by(poll.author)}\n\n`;
   desc += total
-    ? `## ${estrelas(media)}\n**${fmt(media, t)} / 5**  ·  ${t.avaliacoes(total)}`
-    : `## ${estrelas(0)}\n_${t.ninguem}_`;
+    ? `## ${stars(average)}\n**${fmt(average, t)} / 5**  ·  ${t.ratingCount(total)}`
+    : `## ${stars(0)}\n_${t.noRatings}_`;
 
   if (total) {
-    desc += `\n\n**${t.notas}**\n`;
-    const linhas = Object.entries(poll.notas)
+    desc += `\n\n**${t.ratingsHeader}**\n`;
+    const lines = Object.entries(poll.ratings)
       .sort((a, b) => b[1] - a[1])
-      .map(([uid, nota]) => `${estrelas(nota)}  ${fmt(nota, t)} — <@${uid}>`);
-    let mostrados = 0;
-    for (const l of linhas) {
-      if ((desc + l + '\n').length > 3900) break;
-      desc += l + '\n';
-      mostrados++;
+      .map(([userId, rating]) => `${stars(rating)}  ${fmt(rating, t)} — <@${userId}>`);
+    let shown = 0;
+    for (const line of lines) {
+      if ((desc + line + '\n').length > 3900) break; // embed description limit is 4096
+      desc += line + '\n';
+      shown++;
     }
-    if (mostrados < linhas.length) desc += `_${t.outras(linhas.length - mostrados)}_`;
+    if (shown < lines.length) desc += `_${t.more(lines.length - shown)}_`;
   }
 
   const embed = new EmbedBuilder()
-    .setColor(poll.fechada ? 0x808080 : 0xf5b301)
-    .setTitle(`📖 ${poll.titulo}`)
+    .setColor(poll.closed ? 0x808080 : 0xf5b301)
+    .setTitle(`📖 ${poll.title}`)
     .setDescription(desc)
-    .setFooter({ text: poll.fechada ? t.rodapeFechada : t.rodapeAberta });
+    .setFooter({ text: poll.closed ? t.footerClosed : t.footerOpen });
 
-  if (poll.capaArquivo) embed.setImage(`attachment://${poll.capaArquivo}`);
-  else if (poll.capaUrl) embed.setImage(poll.capaUrl);
+  if (poll.coverFile) embed.setImage(`attachment://${poll.coverFile}`);
+  else if (poll.coverUrl) embed.setImage(poll.coverUrl);
   return embed;
 }
 
-function montarComponentes(poll, t) {
-  if (poll.fechada) {
+function buildComponents(poll, t) {
+  if (poll.closed) {
     return [new ActionRowBuilder().addComponents(
-      new ButtonBuilder().setCustomId('reabrir').setLabel(t.reabrir).setStyle(ButtonStyle.Secondary),
+      new ButtonBuilder().setCustomId('reopen').setLabel(t.reopen).setStyle(ButtonStyle.Secondary),
     )];
   }
 
-  // Dropdown com as 10 notas, de 5 até ½, cada uma com o ícone de 5 estrelas
+  // Dropdown with the 10 ratings, from 5 down to ½, each with its 5-star icon
   const menu = new StringSelectMenuBuilder()
-    .setCustomId('nota')
+    .setCustomId('rate')
     .setPlaceholder(t.placeholder)
-    .addOptions(NOTAS.map(n => {
-      const opcao = new StringSelectMenuOptionBuilder()
+    .addOptions(RATINGS.map(n => {
+      const option = new StringSelectMenuOptionBuilder()
         .setValue(String(n))
-        .setLabel(t.opcao(n, fmtCurto(n, t)));
-      const chave = EMOJI[chaveNota(n)] ? chaveNota(n) : (Number.isInteger(n) ? 'cheia' : 'meia');
-      if (EMOJI[chave]) opcao.setEmoji({ id: EMOJI[chave].id, name: EMOJI[chave].name });
-      return opcao;
+        .setLabel(t.option(n, fmtShort(n, t)));
+      const key = EMOJI[ratingKey(n)] ? ratingKey(n) : (Number.isInteger(n) ? 'full' : 'half');
+      if (EMOJI[key]) option.setEmoji({ id: EMOJI[key].id, name: EMOJI[key].name });
+      return option;
     }));
   return [
     new ActionRowBuilder().addComponents(menu),
     new ActionRowBuilder().addComponents(
-      new ButtonBuilder().setCustomId('remover').setLabel(t.remover).setStyle(ButtonStyle.Secondary),
-      new ButtonBuilder().setCustomId('encerrar').setLabel(t.encerrar).setStyle(ButtonStyle.Danger),
+      new ButtonBuilder().setCustomId('remove').setLabel(t.remove).setStyle(ButtonStyle.Secondary),
+      new ButtonBuilder().setCustomId('close').setLabel(t.close).setStyle(ButtonStyle.Danger),
     ),
   ];
 }
 
-// Cada avaliação guarda o idioma em que foi criada (avaliações sem idioma salvo: português)
+// Each poll keeps the language it was created in
 function render(poll) {
-  const t = TXT[poll.idioma] || TXT.pt;
-  return { embeds: [montarEmbed(poll, t)], components: montarComponentes(poll, t) };
+  const t = TEXT[poll.language] || TEXT[DEFAULT_LANGUAGE];
+  return { embeds: [buildEmbed(poll, t)], components: buildComponents(poll, t) };
 }
 
-// Respostas efêmeras: só quem clicou vê, e somem — não poluem o canal
-const aviso = (interaction, chave) =>
-  interaction.reply({ content: TXT[idiomaUsuario(interaction)][chave], flags: MessageFlags.Ephemeral });
+// Ephemeral replies: only the person who clicked sees them, so they never clutter the channel
+const notify = (interaction, key) =>
+  interaction.reply({ content: TEXT[userLanguage(interaction)][key], flags: MessageFlags.Ephemeral });
 
-// ---------- Permissões de encerrar / reabrir ----------
-function cargosDoMembro(member) {
+// ---------- Close / reopen permissions ----------
+function memberRoleIds(member) {
   const roles = member?.roles;
-  if (Array.isArray(roles)) return roles;            // membro "cru" vindo da interação
-  if (roles?.cache) return [...roles.cache.keys()];  // membro completo
+  if (Array.isArray(roles)) return roles;            // raw member from the interaction payload
+  if (roles?.cache) return [...roles.cache.keys()];  // full GuildMember
   return [];
 }
 
-function podeGerenciar(interaction, poll) {
-  if (interaction.user.id === poll.criador) return true;
+function canManage(interaction, poll) {
+  if (interaction.user.id === poll.creatorId) return true;
   if (interaction.memberPermissions?.has(PermissionFlagsBits.Administrator)) return true;
-  const g = config[interaction.guildId] || {};
-  if ((g.pessoas || []).includes(interaction.user.id)) return true;
-  const cargos = g.cargos || [];
-  return cargosDoMembro(interaction.member).some(id => cargos.includes(id));
+  const guild = config[interaction.guildId] || {};
+  if ((guild.users || []).includes(interaction.user.id)) return true;
+  const roles = guild.roles || [];
+  return memberRoleIds(interaction.member).some(id => roles.includes(id));
 }
 
-async function comandoPermissao(interaction) {
-  const t = TXT[idiomaUsuario(interaction)];
+async function handlePermissionCommand(interaction) {
+  const t = TEXT[userLanguage(interaction)];
   const sub = interaction.options.getSubcommand();
-  const g = (config[interaction.guildId] ||= {});
-  g.cargos ||= [];
-  g.pessoas ||= [];
+  const guild = (config[interaction.guildId] ||= { roles: [], users: [] });
 
   if (sub === 'add' || sub === 'remove') {
-    // O campo "quem" aceita um cargo ou uma pessoa
-    const opcao = interaction.options.get('who', true);
-    const lista = opcao.role ? 'cargos' : 'pessoas';
-    const id = opcao.role ? opcao.role.id : opcao.user.id;
+    // "who" accepts either a role or a person
+    const option = interaction.options.get('who', true);
+    const list = option.role ? 'roles' : 'users';
+    const id = option.role ? option.role.id : option.user.id;
     if (sub === 'add') {
-      if (!g[lista].includes(id)) g[lista].push(id);
+      if (!guild[list].includes(id)) guild[list].push(id);
     } else {
-      g[lista] = g[lista].filter(x => x !== id);
+      guild[list] = guild[list].filter(x => x !== id);
     }
-    salvarConfig();
+    saveConfig();
   }
 
-  const cargos = g.cargos.length ? g.cargos.map(id => `<@&${id}>`).join(', ') : t.permNenhum;
-  const pessoas = g.pessoas.length ? g.pessoas.map(id => `<@${id}>`).join(', ') : t.permNinguem;
+  const roles = guild.roles.length ? guild.roles.map(id => `<@&${id}>`).join(', ') : t.permNoRoles;
+  const users = guild.users.length ? guild.users.map(id => `<@${id}>`).join(', ') : t.permNoUsers;
   return interaction.reply({
     content:
-      `${t.permTitulo}\n• ${t.permCriador}\n• ${t.permAdmins}\n` +
-      `• ${t.permCargos(cargos)}\n• ${t.permPessoas(pessoas)}`,
+      `${t.permTitle}\n• ${t.permCreator}\n• ${t.permAdmins}\n` +
+      `• ${t.permRoles(roles)}\n• ${t.permUsers(users)}`,
     flags: MessageFlags.Ephemeral,
     allowedMentions: { parse: [] },
   });
+}
+
+// ---------- /book ----------
+async function handleBookCommand(interaction) {
+  const title = interaction.options.getString('title');
+  const author = interaction.options.getString('author');
+  const cover = interaction.options.getAttachment('cover');
+  const coverUrl = interaction.options.getString('cover_url');
+
+  if (cover && !cover.contentType?.startsWith('image/')) return notify(interaction, 'coverNotImage');
+  if (!cover && coverUrl && !/^https?:\/\/\S+$/i.test(coverUrl)) return notify(interaction, 'coverUrlInvalid');
+
+  await interaction.deferReply();
+
+  const poll = {
+    title,
+    author,
+    language: DEFAULT_LANGUAGE,
+    creatorId: interaction.user.id,
+    closed: false,
+    ratings: {},
+    coverFile: null,
+    coverUrl: null,
+  };
+  const files = [];
+
+  if (cover) {
+    // Re-upload the image with the message so the cover link never expires
+    const res = await fetch(cover.url);
+    const buffer = Buffer.from(await res.arrayBuffer());
+    const ext = (cover.name.split('.').pop() || 'png').toLowerCase().replace(/[^a-z0-9]/g, '') || 'png';
+    poll.coverFile = `cover.${ext}`;
+    files.push(new AttachmentBuilder(buffer, { name: poll.coverFile }));
+  } else if (coverUrl) {
+    poll.coverUrl = coverUrl;
+  }
+
+  const message = await interaction.editReply({ ...render(poll), files });
+  polls[message.id] = poll;
+  savePolls();
+}
+
+// ---------- Poll message components ----------
+// Component IDs used by older versions of the bot
+const LEGACY_IDS = { nota: 'rate', remover: 'remove', encerrar: 'close', reabrir: 'reopen' };
+
+async function handleComponent(interaction) {
+  const userId = interaction.user.id;
+  const action = LEGACY_IDS[interaction.customId] || interaction.customId;
+
+  const poll = polls[interaction.message.id];
+  if (!poll) return notify(interaction, 'pollNotFound');
+
+  if (action === 'rate') {
+    if (poll.closed) return notify(interaction, 'pollClosed');
+    const key = `${interaction.message.id}:${userId}`;
+    if (inFlight.has(key)) return interaction.deferUpdate().catch(() => {});
+    inFlight.add(key);
+
+    const start = Date.now();
+    try {
+      poll.ratings[userId] = parseFloat(interaction.values[0]);
+      await interaction.update(render(poll)); // edits the same message, no new message
+      logTiming(interaction, start);
+      savePolls();
+    } finally {
+      inFlight.delete(key);
+    }
+    return;
+  }
+
+  if (action === 'remove') {
+    if (!(userId in poll.ratings)) return interaction.deferUpdate();
+    delete poll.ratings[userId];
+    savePolls();
+    return interaction.update(render(poll));
+  }
+
+  if (action === 'close' || action === 'reopen') {
+    if (!canManage(interaction, poll)) return notify(interaction, 'noPermission');
+    poll.closed = action === 'close';
+    savePolls();
+    return interaction.update(render(poll));
+  }
+
+  // Any other component comes from an older version: refresh the message to the current layout
+  return interaction.update(render(poll));
 }
 
 // ---------- Bot ----------
 const client = new Client({ intents: [GatewayIntentBits.Guilds] });
 
 client.once(Events.ClientReady, async c => {
-  polls = ler(POLLS_FILE);
-  config = ler(CONFIG_FILE);
-  await prepararEmojis(c);
-  console.log(`Bot online como ${c.user.tag}`);
+  loadData();
+  await setupEmojis(c);
+  console.log(`Bot online as ${c.user.tag}`);
 });
 
 client.on(Events.InteractionCreate, async interaction => {
   try {
-    if (interaction.isChatInputCommand() && interaction.commandName === 'book-permission') {
-      return comandoPermissao(interaction);
-    }
-
-    // /book — cria a avaliação (esta é a única mensagem que aparece no canal)
-    if (interaction.isChatInputCommand() && interaction.commandName === 'book') {
-      const titulo = interaction.options.getString('title');
-      const autor = interaction.options.getString('author');
-      const anexo = interaction.options.getAttachment('cover');
-      const capaUrl = interaction.options.getString('cover_url');
-
-      if (anexo && !anexo.contentType?.startsWith('image/')) return aviso(interaction, 'capaNaoImagem');
-      if (!anexo && capaUrl && !/^https?:\/\/\S+$/i.test(capaUrl)) return aviso(interaction, 'capaUrlInvalida');
-
-      await interaction.deferReply();
-
-      const poll = {
-        titulo, autor,
-        idioma: IDIOMA_PADRAO,
-        criador: interaction.user.id,
-        fechada: false,
-        notas: {},
-        capaArquivo: null,
-        capaUrl: null,
-      };
-      const files = [];
-
-      if (anexo) {
-        // Reenvia a imagem junto da mensagem para o link da capa não expirar
-        const resp = await fetch(anexo.url);
-        const buffer = Buffer.from(await resp.arrayBuffer());
-        const ext = (anexo.name.split('.').pop() || 'png').toLowerCase().replace(/[^a-z0-9]/g, '') || 'png';
-        poll.capaArquivo = `capa.${ext}`;
-        files.push(new AttachmentBuilder(buffer, { name: poll.capaArquivo }));
-      } else if (capaUrl) {
-        poll.capaUrl = capaUrl;
-      }
-
-      const msg = await interaction.editReply({ ...render(poll), files });
-      polls[msg.id] = poll;
-      salvar();
+    if (interaction.isChatInputCommand()) {
+      // "await" so that errors inside the handlers are caught below
+      if (interaction.commandName === 'book') await handleBookCommand(interaction);
+      else if (interaction.commandName === 'book-permission') await handlePermissionCommand(interaction);
       return;
     }
-
-    if (!interaction.isButton() && !interaction.isStringSelectMenu()) return;
-    const uid = interaction.user.id;
-    const partesId = interaction.customId.split(':');
-
-    // Painéis efêmeros de versões anteriores
-    if ((partesId[0] === 'estrela' && partesId.length === 3) || partesId[0] === 'limpar') {
-      return interaction.update({ content: TXT[idiomaUsuario(interaction)].painelAntigo, components: [] });
-    }
-
-    const poll = polls[interaction.message.id];
-    if (!poll) return aviso(interaction, 'naoEncontrada');
-
-    // Nota escolhida no dropdown: salva e atualiza a própria mensagem (nenhuma mensagem nova)
-    if (interaction.customId === 'nota') {
-      if (poll.fechada) return aviso(interaction, 'jaEncerrada');
-      const chave = `${interaction.message.id}:${uid}`;
-      if (emAndamento.has(chave)) return interaction.deferUpdate().catch(() => {});
-      emAndamento.add(chave);
-
-      const inicio = Date.now();
-      try {
-        poll.notas[uid] = parseFloat(interaction.values[0]);
-        await interaction.update(render(poll));
-        medir(interaction, inicio);
-        salvar();
-      } finally {
-        emAndamento.delete(chave);
-      }
-      return;
-    }
-
-    // Botões de estrela de versões anteriores: só troca a mensagem para o dropdown
-    if (partesId[0] === 'estrela' || interaction.customId === 'avaliar') {
-      return interaction.update(render(poll));
-    }
-
-    if (interaction.customId === 'remover') {
-      if (!(uid in poll.notas)) return interaction.deferUpdate();
-      delete poll.notas[uid];
-      salvar();
-      return interaction.update(render(poll));
-    }
-
-    if (interaction.customId === 'encerrar' || interaction.customId === 'reabrir') {
-      if (!podeGerenciar(interaction, poll)) return aviso(interaction, 'semPermissao');
-      poll.fechada = interaction.customId === 'encerrar';
-      salvar();
-      return interaction.update(render(poll));
+    if (interaction.isButton() || interaction.isStringSelectMenu()) {
+      await handleComponent(interaction);
     }
   } catch (err) {
     console.error(err);
-    const msg = { content: TXT[idiomaUsuario(interaction)].erro, flags: MessageFlags.Ephemeral };
-    if (interaction.deferred || interaction.replied) interaction.followUp(msg).catch(() => {});
-    else interaction.reply(msg).catch(() => {});
+    const reply = { content: TEXT[userLanguage(interaction)].error, flags: MessageFlags.Ephemeral };
+    if (interaction.deferred || interaction.replied) interaction.followUp(reply).catch(() => {});
+    else interaction.reply(reply).catch(() => {});
   }
 });
 
